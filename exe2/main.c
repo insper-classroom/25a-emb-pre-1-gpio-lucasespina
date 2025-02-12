@@ -16,6 +16,8 @@ int main() {
   gpio_set_dir(BTN_PIN_BLUE, GPIO_IN);
   gpio_pull_up(BTN_PIN_BLUE);
 
+  
+
 
   while (true) {
 
