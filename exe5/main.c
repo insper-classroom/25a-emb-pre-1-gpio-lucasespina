@@ -21,17 +21,19 @@ int main() {
 
     while (true) {
         if (!gpio_get(BTN_PIN)) {
-            sleep_ms(10);
-            if (!gpio_get(BTN_PIN)) {
-                while (!gpio_get(BTN_PIN));
+            sleep_ms(50); 
+            if (!gpio_get(BTN_PIN)) { 
+                while (!gpio_get(BTN_PIN)); 
+                sleep_ms(50);
                 printf("Botao 1: %d\n", ++cnt_1);
             }
         }
 
         if (!gpio_get(BTN_PIN_2)) {
-            sleep_ms(10);
+            sleep_ms(50);
             if (!gpio_get(BTN_PIN_2)) {
                 while (!gpio_get(BTN_PIN_2));
+                sleep_ms(50);
                 printf("Botao 2: %d\n", ++cnt_2);
             }
         }
