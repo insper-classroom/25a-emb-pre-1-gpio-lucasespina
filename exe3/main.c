@@ -1,45 +1,47 @@
-#include <stdio.h>
-#include "pico/stdlib.h"
 #include "hardware/gpio.h"
-
-#define BTN_PIN 26
-#define BTN_PIN_2 7
-
-void debounce(int pin) {
-    sleep_ms(50);  // Aguarda um tempo para filtrar bouncing
-    while (!gpio_get(pin));  // Espera o botão ser solto
-    sleep_ms(50);  // Garante que não há bouncing residual
-}
+#include "pico/stdlib.h"
+#include <stdio.h>
 
 int main() {
     stdio_init_all();
 
-    gpio_init(BTN_PIN);
-    gpio_set_dir(BTN_PIN, GPIO_IN);
-    gpio_pull_up(BTN_PIN);
+    const int BTN_PIN_RED = 28;
+    const int BTN_PIN_GREEN = 26;
+    const int LED_PIN_R = 4;
+    const int LED_PIN_G = 6;
 
-    gpio_init(BTN_PIN_2);
-    gpio_set_dir(BTN_PIN_2, GPIO_IN);
-    gpio_pull_up(BTN_PIN_2);
+    int flag_red = 0;
+    int flag_green = 0;
 
-    int cnt_1 = 0;
-    int cnt_2 = 0;
+    gpio_init(BTN_PIN_RED);
+    gpio_set_dir(BTN_PIN_RED, GPIO_IN);
+    gpio_pull_up(BTN_PIN_RED);
+
+    gpio_init(BTN_PIN_GREEN);
+    gpio_set_dir(BTN_PIN_GREEN, GPIO_IN);
+    gpio_pull_up(BTN_PIN_GREEN);
+
+    gpio_init(LED_PIN_R);
+    gpio_set_dir(LED_PIN_R, GPIO_OUT);
+    gpio_put(LED_PIN_R, 0);
+
+    gpio_init(LED_PIN_G);
+    gpio_set_dir(LED_PIN_G, GPIO_OUT);
+    gpio_put(LED_PIN_G, 0);
 
     while (true) {
-        if (!gpio_get(BTN_PIN)) {
-            debounce(BTN_PIN);  // Aplica debounce
-            cnt_1++;
-            printf("Botao 1: %d\n", cnt_1);
-            fflush(stdout);
+        if (!gpio_get(BTN_PIN_RED)) {
+            sleep_ms(200);
+            while (!gpio_get(BTN_PIN_RED));
+            flag_red = !flag_red;
+            gpio_put(LED_PIN_R, flag_red);
         }
 
-        if (!gpio_get(BTN_PIN_2)) {
-            debounce(BTN_PIN_2);  // Aplica debounce
-            cnt_2++;
-            printf("Botao 2: %d\n", cnt_2);
-            fflush(stdout);
+        if (!gpio_get(BTN_PIN_GREEN)) {
+            sleep_ms(200);
+            while (!gpio_get(BTN_PIN_GREEN));
+            flag_green = !flag_green;
+            gpio_put(LED_PIN_G, flag_green);
         }
     }
-
-    return 0;
 }
