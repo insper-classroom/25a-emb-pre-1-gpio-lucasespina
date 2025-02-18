@@ -2,13 +2,11 @@
 #include "pico/stdlib.h"
 #include "hardware/gpio.h"
 
-int BTN_PIN = 26;
-int BTN_PIN_2 = 7;
+int BTN_PIN = 7;
+int BTN_PIN_2 = 26;
 
 int main() {
     stdio_init_all();
-
-  
 
     gpio_init(BTN_PIN);
     gpio_set_dir(BTN_PIN, GPIO_IN);
